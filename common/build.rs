@@ -24,7 +24,6 @@ use std::time::{Duration, UNIX_EPOCH};
 
 use protoc_rust::Customize;
 
-const PROTO_FILES_DIR: &str = "../protos";
 const PROTOBUF_TARGET_DIR: &str = "build/proto";
 const GENERATED_SOURCE_HEADER: &str = r#"
 /*
@@ -44,7 +43,8 @@ struct ProtoFile {
 
 fn main() {
     // Generate protobuf files
-    let proto_src_files = glob_simple(&format!("{}/*.proto", PROTO_FILES_DIR));
+    let proto_files_dir = &format!("{}/../protos", env!("PWD"));
+    let proto_src_files = glob_simple(&format!("{}/*.proto", proto_files_dir));
     let last_build_time = read_last_build_time();
 
     let latest_change =
@@ -67,7 +67,7 @@ fn main() {
                 .iter()
                 .map(|proto_file| proto_file.file_path.as_ref())
                 .collect::<Vec<&str>>(),
-            includes: &["src", PROTO_FILES_DIR],
+            includes: &["src", proto_files_dir],
             customize: Customize::default(),
         })
         .expect("unable to run protoc");
