@@ -4,12 +4,19 @@ rust:
 
 before_install:
 - docker pull target/consensource:rust-base
-- docker run target/consensource:rust-base /bin/sh -c "ls -lah && echo '\n' && pwd;"
 
 script:
-- ls -lah && echo '\n' && pwd
-- cd common
-- cargo build
+- >
+  docker run -v `pwd`:/consensource -t target/consensource:rust-base /bin/sh -c
+  "
+  ls -lah /;
+  cd consensource;
+  ls -lah;
+  cd common;
+  cargo fmt -- --check;
+  cargo build;
+  "
+- echo "this build should pass"
 
 # before_install:
 #   # Install ZMQ
