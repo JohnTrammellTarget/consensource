@@ -43,7 +43,7 @@ struct ProtoFile {
 
 fn main() {
     // Generate protobuf files
-    let proto_files_dir = &format!("{}/../protos", env!("HOME"));
+    let proto_files_dir = &format!("{}/../protos", env!("PWD"));
     println!("PROTO FILES DIR: {}", proto_files_dir);
     let proto_src_files = glob_simple(&format!("{}/*.proto", proto_files_dir));
     let last_build_time = read_last_build_time();
